@@ -5,6 +5,7 @@ go 1.23.5
 require (
 	github.com/google/generative-ai-go v0.19.0
 	github.com/google/uuid v1.6.0
+	github.com/hegedustibor/htgo-tts v0.0.0-20240912200108-467b3e535435
 	github.com/pinecone-io/go-pinecone/v3 v3.0.0
 	google.golang.org/api v0.220.0
 	google.golang.org/protobuf v1.36.5
@@ -25,6 +26,8 @@ require (
 	github.com/google/s2a-go v0.1.9 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.4 // indirect
 	github.com/googleapis/gax-go/v2 v2.14.1 // indirect
+	github.com/hajimehoshi/go-mp3 v0.3.3 // indirect
+	github.com/hajimehoshi/oto/v2 v2.2.0 // indirect
 	github.com/oapi-codegen/runtime v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.10.0 // indirect
