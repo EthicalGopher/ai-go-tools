@@ -20,6 +20,13 @@ func TTS(input,filepath,folderpath string) (string,error) {
 	outputFilePtr := flag.String("outfile", filepath, "Name of the output file (without extension)")
 	flag.Parse()
 
+
+	
+	path,_:= os.Stat(folderpath);
+	if path!=nil{
+		os.Remove(folderpath+`\`+filepath+`.mp3`)
+		
+	}
 	// Ensure output directory exists
 	if _, err := os.Stat(*outputDirPtr); os.IsNotExist(err) {
 		err := os.MkdirAll(*outputDirPtr, 0755)
@@ -28,11 +35,7 @@ func TTS(input,filepath,folderpath string) (string,error) {
 		}
 	}
 
-	path,_:= os.Stat(folderpath);
-	if path!=nil{
-		os.Remove(folderpath+`/`+filepath+`.mp3`)
-		
-	}
+
 	// Initialize the TTS system
 	speech := htgotts.Speech{
 		Folder:   *outputDirPtr,
