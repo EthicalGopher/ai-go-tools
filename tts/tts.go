@@ -1,58 +1,42 @@
 package tts
 
 import (
-	"flag"
 	"fmt"
 	"os"
-
+	"path/filepath"
 
 	htgotts "github.com/hegedustibor/htgo-tts"
 	"github.com/hegedustibor/htgo-tts/handlers"
 	"github.com/hegedustibor/htgo-tts/voices"
 )
 
-
-
-func TTS(input,filepath,folderpath string) (string,error) {
-	textPtr := flag.String("text", input, "Text to convert to speech")
-	langPtr := flag.String("lang", voices.English, "Language code (e.g., en, fr, es, de, etc.)")
-	outputDirPtr := flag.String("outdir", folderpath, "Directory to save the audio file")
-	outputFilePtr := flag.String("outfile", filepath, "Name of the output file (without extension)")
-	flag.Parse()
-
-
-	
-	path,_:= os.Stat(folderpath);
-	if path!=nil{
-		err:=os.Remove(folderpath+`\`+filepath+`.mp3`)
-		if err!=nil{
-			return "",err
-			}
-		
+func TTS(input, filename, dir string) (string, error) {
+	// Ensure the output directory exists
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return "", fmt.Errorf("failed to create directory: %v", err)
 	}
-	// Ensure output directory exists
-	if _, err := os.Stat(*outputDirPtr); os.IsNotExist(err) {
-		err := os.MkdirAll(*outputDirPtr, 0755)
-		if err != nil {
-			return "",err
+
+	// Construct full output path
+	fullPath := filepath.Join(dir, filename+".mp3")
+
+	// Delete existing file if it exists
+	if _, err := os.Stat(fullPath); err == nil {
+		if err := os.Remove(fullPath); err != nil {
+			return "", fmt.Errorf("failed to remove existing file: %v", err)
 		}
 	}
 
-
-	// Initialize the TTS system
+	// Initialize TTS
 	speech := htgotts.Speech{
-		Folder:   *outputDirPtr,
-		Language: *langPtr,
+		Folder:   dir,
+		Language: voices.English, // Or make this a parameter if needed
 		Handler:  &handlers.Native{},
 	}
 
-	// Convert text to speech
-	fmt.Printf("Converting text to speech: '%s'\n", *textPtr)
-	_, err := speech.CreateSpeechFile(*textPtr, *outputFilePtr)
-	if err != nil {
-		return "",err
+	// Generate speech file
+	if _, err := speech.CreateSpeechFile(input, filename); err != nil {
+		return "", fmt.Errorf("failed to create speech: %v", err)
 	}
 
-
-	return "success",nil
+	return "success", nil
 }
