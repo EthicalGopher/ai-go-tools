@@ -24,7 +24,10 @@ func TTS(input,filepath,folderpath string) (string,error) {
 	
 	path,_:= os.Stat(folderpath);
 	if path!=nil{
-		os.Remove(folderpath+`\`+filepath+`.mp3`)
+		err:=os.Remove(folderpath+`\`+filepath+`.mp3`)
+		if err!=nil{
+			return "",err
+			}
 		
 	}
 	// Ensure output directory exists
