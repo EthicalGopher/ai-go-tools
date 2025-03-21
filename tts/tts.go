@@ -38,5 +38,5 @@ func TTS(input, filename, dir string) (string, error) {
 		return "", fmt.Errorf("failed to create speech: %v", err)
 	}
 
-	return "success", nil
+	return "done", nil
 }
