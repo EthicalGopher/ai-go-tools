@@ -1,6 +1,6 @@
 module github.com/EthicalGopher/rag
 
-go 1.24.1
+go 1.23.7
 
 require (
 	github.com/google/generative-ai-go v0.19.0
