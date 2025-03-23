@@ -1,42 +1,44 @@
-package tts
+package main
 
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 
+	"github.com/google/uuid"
 	htgotts "github.com/hegedustibor/htgo-tts"
 	"github.com/hegedustibor/htgo-tts/handlers"
 	"github.com/hegedustibor/htgo-tts/voices"
+	
 )
+var Path string
+func TTS(input, dir,path string) (string, error) {
+	// Generate unique filename
+	uuid := uuid.New().String()
+	filename := fmt.Sprintf("%s+%s",uuid,path)
+	fullPath:=dir+`\`+filename+`.mp3`
+	
 
-func TTS(input, filename, dir string) (string, error) {
-	// Ensure the output directory exists
+	
+	// Ensure directory exists
 	if err := os.MkdirAll(dir, 0755); err != nil {
-		return "", fmt.Errorf("failed to create directory: %v", err)
+		return "", fmt.Errorf("directory creation failed: %w", err)
 	}
-
-	// Construct full output path
-	fullPath := filepath.Join(dir, filename+".mp3")
-
-	// Delete existing file if it exists
-	if _, err := os.Stat(fullPath); err == nil {
-		if err := os.Remove(fullPath); err != nil {
-			return "", fmt.Errorf("failed to remove existing file: %v", err)
-		}
-	}
-
-	// Initialize TTS
+	
+	
+	// Generate speech file
 	speech := htgotts.Speech{
 		Folder:   dir,
-		Language: voices.English, // Or make this a parameter if needed
+		Language: voices.English,
 		Handler:  &handlers.Native{},
 	}
 
-	// Generate speech file
 	if _, err := speech.CreateSpeechFile(input, filename); err != nil {
-		return "", fmt.Errorf("failed to create speech: %v", err)
+		return "", fmt.Errorf("speech generation failed: %w", err)
 	}
-
-	return "done", nil
+	Path=fullPath
+	
+	return fullPath, nil
 }
+
+
+
