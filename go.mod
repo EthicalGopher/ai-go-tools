@@ -1,4 +1,4 @@
-module aibuild
+module github.com/EthicalGopher/rag
 
 go 1.24.1
 
