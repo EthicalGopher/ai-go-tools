@@ -11,10 +11,10 @@ import (
 	
 )
 var Path string
-func TTS(input, dir,path string) (string, error) {
+func TTS(input, dir,filename string) (string, error) {
 	// Generate unique filename
 	uuid := uuid.New().String()
-	filename := fmt.Sprintf("%s+%s",uuid,path)
+	filename := fmt.Sprintf("%s+%s",uuid,filename)
 	fullPath:=dir+`\`+filename+`.mp3`
 	
 
