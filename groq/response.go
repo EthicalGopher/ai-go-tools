@@ -32,12 +32,16 @@ type StreamResponse struct {
 
 
 
-func Ragfromgroq(apiKey, input string) string {
+func Ragfromgroq(apiKey, input,about string) string {
 	url := "https://api.groq.com/openai/v1/chat/completions"
 
 	payload := RequestPayload{
 		Model: "llama-3.3-70b-versatile",
 		Messages: []Message{
+			{
+				Role:    "user",
+				Content: about,
+			},
 			{
 				Role:    "user",
 				Content: input,
