@@ -2,26 +2,26 @@ package gemini
 
 import (
 	"context"
-	
+
 	"log"
 
+	list "github.com/EthicalGopher/go-ai-tools/struct"
 	"github.com/google/generative-ai-go/genai"
 	"google.golang.org/api/option"
-
-
 )
 
 
-func Maketextembedding (API,text,model string) []float32{
+
+func Maketextembedding (load list.Airesponse,text string) []float32{
 	ctx := context.Background()
 
-	client, err := genai.NewClient(ctx, option.WithAPIKey(API))
+	client, err := genai.NewClient(ctx, option.WithAPIKey(load.Apikey))
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer client.Close()
 	
-	em := client.EmbeddingModel(model)
+	em := client.EmbeddingModel(load.Model)
 	res, err := em.EmbedContent(ctx, genai.Text(text))
 	
 	if err != nil {

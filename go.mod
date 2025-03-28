@@ -1,4 +1,4 @@
-module github.com/EthicalGopher/rag
+module github.com/EthicalGopher/go-ai-tools
 
 go 1.23.7
 
@@ -7,15 +7,15 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/hegedustibor/htgo-tts v0.0.0-20240912200108-467b3e535435
 	github.com/pinecone-io/go-pinecone/v3 v3.1.0
-	google.golang.org/api v0.227.0
-	google.golang.org/protobuf v1.36.5
+	google.golang.org/api v0.228.0
+	google.golang.org/protobuf v1.36.6
 )
 
 require (
 	cloud.google.com/go v0.115.0 // indirect
 	cloud.google.com/go/ai v0.8.0 // indirect
 	cloud.google.com/go/auth v0.15.0 // indirect
-	cloud.google.com/go/auth/oauth2adapt v0.2.7 // indirect
+	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.6.0 // indirect
 	cloud.google.com/go/longrunning v0.5.7 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect

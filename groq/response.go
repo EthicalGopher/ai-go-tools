@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+
+	list "github.com/EthicalGopher/go-ai-tools/struct"
 )
 
 type Message struct {
@@ -32,19 +34,23 @@ type StreamResponse struct {
 
 
 
-func Ragfromgroq(apiKey, input,about,model string) string {
+
+
+
+
+func Generateresponose(load list.Airesponse) (any,error) {
 	url := "https://api.groq.com/openai/v1/chat/completions"
 
 	payload := RequestPayload{
-		Model: model,
+		Model: load.Model,
 		Messages: []Message{
 			{
-				Role:    "user",
-				Content: about,
+				Role:    "system",
+				Content: load.About,
 			},
 			{
 				Role:    "user",
-				Content: input,
+				Content: load.Input,
 			},
 		},
 		Stream: true,
@@ -52,24 +58,23 @@ func Ragfromgroq(apiKey, input,about,model string) string {
 
 	payloadBytes, err := json.Marshal(payload)
 	if err != nil {
-		fmt.Printf("Error marshaling payload: %v\n", err)
-		return "Error marshaling payload"
+		return nil,err
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(payloadBytes))
 	if err != nil {
-		fmt.Printf("Error creating request: %v\n", err)
-		return "Error creating request"
+		
+		return nil,err
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+apiKey)
+	req.Header.Set("Authorization", "Bearer "+load.Apikey)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Printf("Error making request: %v\n", err)
-		return "Error making request"
+		
+		return nil,err
 	}
 	defer resp.Body.Close()
 
@@ -107,8 +112,8 @@ func Ragfromgroq(apiKey, input,about,model string) string {
 	}
 
 	if err := scanner.Err(); err != nil {
-		fmt.Printf("Error reading stream: %v\n", err)
-		return "Error reading stream"
+		
+		return nil,err
 	}
-	return fullResponse.String() // Return the accumulated response
+	return fullResponse.String(),nil // Return the accumulated response
 }
