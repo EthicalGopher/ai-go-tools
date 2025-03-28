@@ -7,13 +7,28 @@ import (
 
 	"github.com/pinecone-io/go-pinecone/v3/pinecone"
 )
+type Pincone_info struct{
+	IndexName string
+	Namespace string
+	API string
+	Field string
+	QueryVector []float32
+	TopK int
+}
 
 
 
 
 
+func SearchData(load Pincone_info) []string {
+	indexName := load.IndexName
+	namespace := load.Namespace
+	API := load.API
+	field := load.Field
 
-func SearchData(indexName,namespace,API,field string,queryVector []float32) []string {
+
+
+	queryVector := load.QueryVector
 	ctx := context.Background()
 
 	clientParams := pinecone.NewClientParams{
@@ -33,8 +48,12 @@ func SearchData(indexName,namespace,API,field string,queryVector []float32) []st
 		log.Fatalf("Failed to create IndexConnection1 for Host %v: %v", idxModel.Host, err)
 	}
 
-	
-	
+	var K int
+	if load.TopK==0{
+		K=3
+	}else{
+		K=load.TopK
+	}
 
 	
 
@@ -42,7 +61,7 @@ func SearchData(indexName,namespace,API,field string,queryVector []float32) []st
 
 	res, err := idxConnection.QueryByVectorValues(ctx, &pinecone.QueryByVectorValuesRequest{
 		Vector:        queryVector,
-		TopK:          3,
+		TopK:          uint32(K),
 		IncludeValues: true,
 		IncludeMetadata: true,
 	})

@@ -20,6 +20,9 @@ func Maketextembedding (load list.Airesponse,text string) []float32{
 		log.Fatal(err)
 	}
 	defer client.Close()
+	if load.Model == ""{
+		load.Model = "gemini-embedding-exp-03-07"
+	}
 	
 	em := client.EmbeddingModel(load.Model)
 	res, err := em.EmbedContent(ctx, genai.Text(text))

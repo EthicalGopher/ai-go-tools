@@ -18,8 +18,15 @@ func Generateresponse(load list.Airesponse) (string, error) {
 		return "", err
 	}
 	defer client.Close()
+	var Model string
+	if load.Model == "" {
+		Model = "gemini-2.0-flash"
+	}else{
 
-	model := client.GenerativeModel(load.Model)
+		Model = load.Model
+	}
+
+	model := client.GenerativeModel(Model)
 	model.SystemInstruction = &genai.Content{
 		Parts: []genai.Part{genai.Text(load.About)},
 	}
